@@ -1,5 +1,5 @@
 ﻿
-namespace LearningAspCoreWeb
+namespace LearningAspCoreWeb.Extensions
 {
     public static class HtmlExtensions
     {

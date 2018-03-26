@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LearningAspCoreWeb.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
@@ -12,7 +13,8 @@ namespace LearningAspCoreWeb
         /// <param name="context">The context.</param>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static async Task AppSettings(HttpContext context, IConfigurationRoot config)
+        public static async Task AppSettings(
+            HttpContext context, IConfigurationRoot config)
         {
             string settings = config["AppSettings:SiteName"];
             await context.Response.WriteAsync(settings.Div());
@@ -24,7 +26,8 @@ namespace LearningAspCoreWeb
         /// <param name="context">The context.</param>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static async Task ReadDatabaseConnection(HttpContext context, IConfigurationRoot config)
+        public static async Task ReadDatabaseConnection(
+            HttpContext context, IConfigurationRoot config)
         {
             string connectionString = config["ConnectionStrings:DefaultConnection"];
             await context.Response.WriteAsync(connectionString.Div());
@@ -36,7 +39,8 @@ namespace LearningAspCoreWeb
         /// <param name="context">The context.</param>
         /// <param name="config">The configuration.</param>
         /// <returns></returns>
-        public static async Task ReadSecret(HttpContext context, IConfigurationRoot config)
+        public static async Task ReadSecret(
+            HttpContext context, IConfigurationRoot config)
         {
             string secretString = config["Secret"];
             await context.Response.WriteAsync(secretString.Div());

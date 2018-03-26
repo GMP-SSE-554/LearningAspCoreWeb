@@ -20,7 +20,8 @@ namespace LearningAspCoreWeb
         /// <param name="env">The env.</param>
         public Startup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json");
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath).AddJsonFile("appsettings.json");
             if (env.IsDevelopment())
             {
                 builder.AddUserSecrets<Startup>();
@@ -57,7 +58,7 @@ namespace LearningAspCoreWeb
             app.UseSession();
             app.UseStaticFiles();
             app.UseHeaderMiddleware();
-            //app.UseHeadingOneMiddleware();
+            app.UseHeadingOneMiddleware();
 
             if (env.IsDevelopment())
             {
@@ -83,7 +84,8 @@ namespace LearningAspCoreWeb
             });
 
             PathString remaining;
-            app.MapWhen(context => context.Request.Path.StartsWithSegments("/configuration", out remaining),
+            app.MapWhen(context => context.Request.Path.StartsWithSegments("/configuration",
+                    out remaining),
                 configApp =>
                 {
                     configApp.Run(async context =>
@@ -101,10 +103,11 @@ namespace LearningAspCoreWeb
                             await Config.ReadSecret(context, Configuration);
                         }
 
-                        HomeController homeController = app.ApplicationServices.GetService<HomeController>();
+                        HomeController homeController = 
+                            app.ApplicationServices.GetService<HomeController>();
                         int statusCode = await homeController.Index(context);
                         context.Response.StatusCode = statusCode;
-                        // return;
+                        return;
                     });
                 });
 
@@ -124,7 +127,7 @@ namespace LearningAspCoreWeb
                     case "/head":
                         result = RequestAndResponse.GetHeaderInformation(context.Request);
                         break;
-                    case "/add":
+                    case "/qs":
                         result = RequestAndResponse.QueryString(context.Request);
                         break;
                     case "/content":

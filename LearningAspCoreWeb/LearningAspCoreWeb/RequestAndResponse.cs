@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LearningAspCoreWeb.Extensions;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Text;
@@ -63,10 +64,8 @@ namespace LearningAspCoreWeb
             var sb = new StringBuilder();
             string xVal = request.Query["x"];
             string yVal = request.Query["y"];
-            if (xVal == null || yVal == null)
-            {
-                return "x and y must both be set";
-            }
+            string opType = request.Query["op"];
+            if (xVal == null || yVal == null) return "x and y must both be set";
 
             if (!int.TryParse(xVal, out int x))
             {
@@ -77,11 +76,24 @@ namespace LearningAspCoreWeb
                 sb.Append($"Error parsing {yVal}");
             }
 
-            if (!sb.ToString().Equals(string.Empty))
+            if (!sb.ToString().Equals(string.Empty)) return sb.ToString().Div();
+
+            switch (opType)
             {
-                return sb.ToString().Div();
+                case "-":
+                    sb.Append($"{x} - {y} = {x - y}");
+                    break;
+                case "*":
+                    sb.Append($"{x} * {y} = {x * y}");
+                    break;
+                case "/":
+                    sb.Append($"{x} / {y} = {x / y}");
+                    break;
+                default:
+                    sb.Append($"{x} + {y} = {x + y}");
+                    break;
             }
-            return $"{x} + {y} = {x + y}".Div();
+            return sb.ToString();
         }
 
         /// <summary>
